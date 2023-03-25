@@ -7,11 +7,12 @@ using System.Threading;
 namespace Wayz.Memhole.Kernel
 {
     /// <summary>
-    /// These functions are direct maps of those in version 1.7 of the C wrapper (wrappers/C/memhole.h). It will work with versions of memhole >= v1.2
+    /// These functions are direct maps of those in version 1.7 of the C wrapper (wrappers/C/memhole.h).
+    /// Requires Memhole v1.4.x or newer for all features
     /// </summary>
     internal static class StaticCppInterop
     {
-        private const string LibraryPath = "";
+        private const string LibraryPath = "libmemhole.so";
 
         [DllImport(LibraryPath)]
         internal static extern unsafe void* memhole_create();

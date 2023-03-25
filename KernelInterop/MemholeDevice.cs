@@ -4,68 +4,92 @@ using System.Text;
 
 namespace Wayz.Memhole.Kernel
 {
-    public sealed class MemholeDevice : IMemholeDevice
+    public sealed unsafe class MemholeDevice : IMemholeDevice, IDisposable
     {
-        public long AttachToPid(int pid)
+        private IMemholeBuffer _buffer;
+        private readonly void* _memhole;
+
+        public MemholeDevice()
         {
-            throw new NotImplementedException();
+            _buffer = new MemholeBuffer();
+            _memhole = StaticCppInterop.memhole_create();
+            if (_memhole == null || _memhole == (void*)0)
+            {
+                throw new OutOfMemoryException("Could not allocate memhole_t struct in C++ interop library.");
+            }
         }
 
-        public long AttachToPids(int pid, int pid2)
+        public void AttachToPid(int pid)
+            => ThrowIfExceptional(StaticCppInterop.memhole_attach_to_pid(_memhole, pid));
+
+        //public void AttachToPids(int pid, int pid2)
+        //    => ThrowIfExceptional(StaticCppInterop.memhole_attach_to_pids(_memhole, pid, pid2));
+
+        //public void AttachToSecondaryPid(int pid)
+        //    => ThrowIfExceptional(StaticCppInterop.memhole_attach_secondary_pid(_memhole, pid));
+
+        public void Connect()
+            => ThrowIfExceptional(StaticCppInterop.memhole_connect(_memhole));
+        public void Disconnect()
+            => ThrowIfExceptional(StaticCppInterop.memhole_disconnect(_memhole));
+
+        public ReadOnlySpan<byte> Read(long len)
         {
-            throw new NotImplementedException();
+            _buffer.SetBufferSize((ulong)len);
+            _buffer.UseUnsafeBuffer((ptr) =>
+            {
+                byte* data = (byte*)ptr;
+                ThrowIfExceptional(StaticCppInterop.memhole_read(_memhole, data, len, 0));
+            });
+            return _buffer.GetBuffer();
+        }
+        public ReadOnlySpan<byte> ReadFrom(long position, long len)
+        {
+            SetMemoryPosition(position);
+            return Read(len);
+        }
+        public long SetMemoryPosition(long position)
+            => ThrowIfExceptional(StaticCppInterop.memhole_set_mem_pos(_memhole, position, (int)MemholeParallelMode.SKMFAST));
+        public long Write(ReadOnlySpan<byte> data)
+        {
+            int dataLen = data.Length;
+            _buffer.SetBuffer(data);
+            _buffer.UseUnsafeBuffer((ptr) =>
+            {
+                byte* dataPtr = (byte*)ptr;
+                ThrowIfExceptional(StaticCppInterop.memhole_write(_memhole, dataPtr, dataLen, 0));
+            });
+            return dataLen;
+        }
+        public long WriteTo(long position, ReadOnlySpan<byte> data)
+        {
+            SetMemoryPosition(position);
+            return Write(data);
         }
 
-        public long AttachToSecondaryPid(int pid)
+        private long ThrowIfExceptional(long returnVal)
         {
-            throw new NotImplementedException();
-        }
+            if (!Enum.TryParse<ErrorCodes>((-returnVal).ToString(), out var ec))
+            {
+                return returnVal;
+            }
 
-        public int Connect()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Disconnect()
-        {
-            throw new NotImplementedException();
+            throw ec switch
+            {
+                ErrorCodes.EINVDEV => new MemholeInvalidDeviceException(),
+                ErrorCodes.EMEMHNF => new MemholeDeviceNotFoundException(),
+                ErrorCodes.EMEMBSY => new MemholeDeviceBusyException(),
+                ErrorCodes.EINVPID => new MemholeInvalidPidException(),
+                ErrorCodes.EKMALOC => new MemholeKernelMallocFailureException(),
+                ErrorCodes.EUSPOPN => new MemholeUnsupportedOperationException(),
+                _ => new NotSupportedException()
+            };
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            StaticCppInterop.memhole_disconnect(_memhole);
+            StaticCppInterop.memhole_delete(_memhole);
         }
-
-        public long GetMemoryPosition()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ReadOnlySpan<byte> Read(long len)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ReadOnlySpan<byte> ReadFrom(long position, long len)
-        {
-            throw new NotImplementedException();
-        }
-
-        public long SetMemoryPosition(long position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public long Write(ReadOnlySpan<byte> data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public long WriteTo(long position, ReadOnlySpan<byte> data)
-        {
-            throw new NotImplementedException();
-        }
-
-        private long 
     }
 }

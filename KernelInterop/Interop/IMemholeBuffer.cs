@@ -2,17 +2,16 @@
 
 namespace Wayz.Memhole.Kernel
 {
-    internal interface IMemholeBuffer : IDisposable
+    internal interface IMemholeBuffer
     {
-        public unsafe byte* Buffer { get; protected set; }
-        
-        ulong SetSize(ulong size);
-
         ulong GetSize();
 
         ReadOnlySpan<byte> GetBuffer();
 
         void SetBuffer(ReadOnlySpan<byte> buffer);
 
+        void UseUnsafeBuffer(Action<IntPtr> action);
+
+        void SetBufferSize(ulong size);
     }
 }

@@ -43,6 +43,8 @@ namespace Wayz.Memhole.Kernel
 
         /// <summary>
         /// Unsupported Operation Error (the memhole version installed is likely older than the wrapper being used, and should be updated)
+        ///
+        /// Error UnSuPorted OPeratioN
         /// </summary>
         EUSPOPN = 128
     }
