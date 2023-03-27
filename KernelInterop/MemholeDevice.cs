@@ -39,7 +39,7 @@ namespace Wayz.Memhole.Kernel
             _buffer.UseUnsafeBuffer((ptr) =>
             {
                 byte* data = (byte*)ptr;
-                ThrowIfExceptional(StaticCppInterop.memhole_read(_memhole, data, len, 0));
+                ThrowIfExceptional(StaticCppInterop.memhole_read(_memhole, data, len, 1));
             });
             return _buffer.GetBuffer();
         }
@@ -50,18 +50,19 @@ namespace Wayz.Memhole.Kernel
         }
         public long SetMemoryPosition(long position)
             => ThrowIfExceptional(StaticCppInterop.memhole_set_mem_pos(_memhole, position, (int)MemholeParallelMode.SKMFAST));
-        public long Write(ReadOnlySpan<byte> data)
+        
+        private long Write(ReadOnlySpan<byte> data)
         {
             int dataLen = data.Length;
             _buffer.SetBuffer(data);
             _buffer.UseUnsafeBuffer((ptr) =>
             {
                 byte* dataPtr = (byte*)ptr;
-                ThrowIfExceptional(StaticCppInterop.memhole_write(_memhole, dataPtr, dataLen, 0));
+                ThrowIfExceptional(StaticCppInterop.memhole_write(_memhole, dataPtr, dataLen, 1));
             });
             return dataLen;
         }
-        public long WriteTo(long position, ReadOnlySpan<byte> data)
+        private long WriteTo(long position, ReadOnlySpan<byte> data)
         {
             SetMemoryPosition(position);
             return Write(data);
@@ -69,6 +70,10 @@ namespace Wayz.Memhole.Kernel
 
         private long ThrowIfExceptional(long returnVal)
         {
+            if(returnVal >= 0)
+            {
+                return returnVal;
+            }
             if (!Enum.TryParse<ErrorCodes>((-returnVal).ToString(), out var ec))
             {
                 return returnVal;
@@ -82,7 +87,7 @@ namespace Wayz.Memhole.Kernel
                 ErrorCodes.EINVPID => new MemholeInvalidPidException(),
                 ErrorCodes.EKMALOC => new MemholeKernelMallocFailureException(),
                 ErrorCodes.EUSPOPN => new MemholeUnsupportedOperationException(),
-                _ => new NotSupportedException()
+                _ => new NotSupportedException($"Unknown error code {ec}")
             };
         }
 
