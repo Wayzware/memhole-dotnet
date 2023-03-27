@@ -7,7 +7,7 @@ namespace Wayz.Memhole.Kernel
     /// <summary>
     /// A controller/manager of memhole
     /// </summary>
-    public interface IMemholeDevice
+    public interface IMemholeDevice : IDisposable
     {
         /// <summary>
         /// Connect the memhole device to the kernel level driver

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Wayz.Memhole.Kernel
 {
-    public sealed unsafe class MemholeDevice : IMemholeDevice, IDisposable
+    public sealed unsafe class MemholeDevice : IMemholeDevice
     {
         private IMemholeBuffer _buffer;
         private readonly void* _memhole;
