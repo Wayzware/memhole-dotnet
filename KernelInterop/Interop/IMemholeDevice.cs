@@ -29,25 +29,6 @@ namespace Wayz.Memhole.Kernel
         /// <exception cref="MemholeInvalidPidException"></exception>
         void AttachToPid(int pid);
 
-        /*
-        /// <summary>
-        /// Attach memhole to the secondary process's memory, for other process -> other process mode
-        /// </summary>
-        /// <param name="pid">The process ID of the secondary process</param>
-        /// <exception cref="MemholeInvalidDeviceException"></exception>
-        /// <exception cref="MemholeInvalidPidException"></exception>
-        void AttachToSecondaryPid(int pid);
-
-        /// <summary>
-        /// Attach memhole to two processes' memory, for other process -> other process mode
-        /// </summary>
-        /// <param name="pid">Process ID of the primary process</param>
-        /// <param name="pid2">Process ID of the secondary process</param>
-        /// <exception cref="MemholeInvalidDeviceException"></exception>
-        /// <exception cref="MemholeInvalidPidException"></exception>
-        void AttachToPids(int pid, int pid2);
-        */
-
         /// <summary>
         /// Sets the memory position for a read or write operation.
         /// </summary>
@@ -70,6 +51,7 @@ namespace Wayz.Memhole.Kernel
         /// <returns>The memory read</returns>
         ReadOnlySpan<byte> ReadFrom(long position, long len);
 
+        // Coming soon
         /// <summary>
         /// Write memory to the target position
         /// </summary>
@@ -77,6 +59,7 @@ namespace Wayz.Memhole.Kernel
         /// <returns>The number of bytes written</returns>
         long Write(ReadOnlySpan<byte> data);
 
+        // Coming soon
         /// <summary>
         /// Write memory to the target position
         /// </summary>
