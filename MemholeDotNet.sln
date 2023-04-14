@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wayz.Memhole.Kernel", "KernelInterop\Wayz.Memhole.Kernel.csproj", "{5540FAD0-E116-4984-A6AC-4CE74E88A6A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{85597EAE-58B5-4916-94DA-414952F79718}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KernelInteropTests", "KernelInteropTests\KernelInteropTests.csproj", "{50B747E8-CA05-47FD-BD84-64D11F7596E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{88CD5A91-9D3E-4AA5-A8A6-238C29F9AEDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wayz.Memhole.WebApi", "Wayz.Memhole.WebApi\Wayz.Memhole.WebApi.csproj", "{D5C84F18-55BA-4790-9BEF-E01BF9236302}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wayz.Memhole.WebApp", "Wayz.Memhole.WebApp\Wayz.Memhole.WebApp.csproj", "{32E7C79C-394C-4194-B00D-7A6208487C7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemholeApiTests", "MemholeApiTests\MemholeApiTests.csproj", "{4C8D77EC-3941-4311-9814-9538ABE252B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D5C84F18-55BA-4790-9BEF-E01BF9236302} = {D5C84F18-55BA-4790-9BEF-E01BF9236302}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5540FAD0-E116-4984-A6AC-4CE74E88A6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5540FAD0-E116-4984-A6AC-4CE74E88A6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5540FAD0-E116-4984-A6AC-4CE74E88A6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5540FAD0-E116-4984-A6AC-4CE74E88A6A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50B747E8-CA05-47FD-BD84-64D11F7596E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50B747E8-CA05-47FD-BD84-64D11F7596E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50B747E8-CA05-47FD-BD84-64D11F7596E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50B747E8-CA05-47FD-BD84-64D11F7596E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5C84F18-55BA-4790-9BEF-E01BF9236302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C84F18-55BA-4790-9BEF-E01BF9236302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C84F18-55BA-4790-9BEF-E01BF9236302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C84F18-55BA-4790-9BEF-E01BF9236302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E7C79C-394C-4194-B00D-7A6208487C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E7C79C-394C-4194-B00D-7A6208487C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E7C79C-394C-4194-B00D-7A6208487C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E7C79C-394C-4194-B00D-7A6208487C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C8D77EC-3941-4311-9814-9538ABE252B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C8D77EC-3941-4311-9814-9538ABE252B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C8D77EC-3941-4311-9814-9538ABE252B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C8D77EC-3941-4311-9814-9538ABE252B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5540FAD0-E116-4984-A6AC-4CE74E88A6A0} = {88CD5A91-9D3E-4AA5-A8A6-238C29F9AEDB}
+		{50B747E8-CA05-47FD-BD84-64D11F7596E3} = {85597EAE-58B5-4916-94DA-414952F79718}
+		{D5C84F18-55BA-4790-9BEF-E01BF9236302} = {88CD5A91-9D3E-4AA5-A8A6-238C29F9AEDB}
+		{32E7C79C-394C-4194-B00D-7A6208487C7D} = {88CD5A91-9D3E-4AA5-A8A6-238C29F9AEDB}
+		{4C8D77EC-3941-4311-9814-9538ABE252B8} = {85597EAE-58B5-4916-94DA-414952F79718}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BB50AA3-200D-4A37-84CC-150579A5BF3F}
+	EndGlobalSection
+EndGlobal
