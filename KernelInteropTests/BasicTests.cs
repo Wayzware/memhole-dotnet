@@ -66,7 +66,6 @@ namespace KernelInteropTests
         {
             var result = _memhole.Read(1024);
             output.WriteLine(Convert.ToHexString(result));
-            Assert.Fail("Test failed");
             Assert.Equal(1024, result.Length);
         }
 

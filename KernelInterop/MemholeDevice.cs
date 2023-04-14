@@ -51,7 +51,7 @@ namespace Wayz.Memhole.Kernel
         public long SetMemoryPosition(long position)
             => ThrowIfExceptional(StaticCppInterop.memhole_set_mem_pos(_memhole, position, (int)MemholeParallelMode.SKMFAST));
         
-        private long Write(ReadOnlySpan<byte> data)
+        public long Write(ReadOnlySpan<byte> data)
         {
             int dataLen = data.Length;
             _buffer.SetBuffer(data);
@@ -62,7 +62,7 @@ namespace Wayz.Memhole.Kernel
             });
             return dataLen;
         }
-        private long WriteTo(long position, ReadOnlySpan<byte> data)
+        public long WriteTo(long position, ReadOnlySpan<byte> data)
         {
             SetMemoryPosition(position);
             return Write(data);
