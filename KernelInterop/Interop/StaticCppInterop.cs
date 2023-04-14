@@ -12,7 +12,7 @@ namespace Wayz.Memhole.Kernel
     /// </summary>
     internal static class StaticCppInterop
     {
-        private const string LibraryPath = "memhole";
+        private const string LibraryPath = "/home/wayz/repos/memhole-dotnet/KernelInterop/memhole.so";
 
         [DllImport(LibraryPath)]
         internal static extern unsafe void* memhole_create();

@@ -15,6 +15,12 @@ namespace MemholeApi.Controllers
             _memholeDevice = memholeDevice;
         }
 
+        [HttpGet("")]
+        public IActionResult Alive()
+        {
+            return Ok("alive");
+        }
+
         [HttpPost("connect")]
         public IActionResult Connect()
         {

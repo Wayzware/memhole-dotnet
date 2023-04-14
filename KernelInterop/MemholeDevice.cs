@@ -70,7 +70,7 @@ namespace Wayz.Memhole.Kernel
 
         private long ThrowIfExceptional(long returnVal)
         {
-            if(returnVal >= 0)
+            if(returnVal >= -1)
             {
                 return returnVal;
             }
