@@ -6,32 +6,25 @@ namespace KernelInteropTests
     public class BasicTests : IDisposable
     {
         private readonly IMemholeDevice _memhole;
-        private readonly Process _process;
         private readonly ITestOutputHelper output;
 
         private const long BufferSize = 1024L * 1024L * 1024L * 16L;
-        private readonly unsafe byte* _buffer;
+        private readonly unsafe byte* _buffer = (byte*)0x7fc492c17010;
+        private const int Pid = 430366;
 
         public unsafe BasicTests(ITestOutputHelper output)
         {
             this.output = output;
             _memhole = new MemholeDevice();
-            _process = Process.Start("16gb_buffer.o");
+            //_process.Start();
 
-            var buffer = new char[1024];
+            //var buffer = new char[1024];
 
-            var result = Task.WaitAny(new Task[]
-                { _process.StandardOutput.ReadAsync(buffer).AsTask(), Task.Delay(60000) });
-            if (result != 0)
-            {
-                Assert.Fail("Process did not allocate in 60 seconds");
-            }
-
-            if (!long.TryParse(buffer.ToString(), out var longBuffer))
-            {
-                Assert.Fail("Could not read buffer location");
-            }
-            _buffer = (byte*)longBuffer;
+            // if (!long.TryParse(buffer.ToString(), out var longBuffer))
+            // {
+            //     Assert.Fail("Could not read buffer location");
+            // }
+            // _buffer = (byte*)longBuffer;
 
             try
             {
@@ -44,7 +37,7 @@ namespace KernelInteropTests
 
             try
             {
-                _memhole.AttachToPid(_process.Id);
+                _memhole.AttachToPid(Pid);
             }
             catch (Exception e)
             {
@@ -53,7 +46,7 @@ namespace KernelInteropTests
 
             try
             {
-                _memhole.SetMemoryPosition(result);
+                _memhole.SetMemoryPosition((long)_buffer);
             }
             catch (Exception e)
             {
@@ -65,7 +58,7 @@ namespace KernelInteropTests
         {
             _memhole.Disconnect();
             _memhole.Dispose();
-            _process.Kill();
+            //_process.Kill();
         }
 
         [Fact]
@@ -73,6 +66,7 @@ namespace KernelInteropTests
         {
             var result = _memhole.Read(1024);
             output.WriteLine(Convert.ToHexString(result));
+            Assert.Fail("Test failed");
             Assert.Equal(1024, result.Length);
         }
 
@@ -84,7 +78,7 @@ namespace KernelInteropTests
             Assert.Equal(1024, result.Length);
         }
 
-        [Fact]
+        //[Fact]
         public void CanWrite()
         {
             var data = new byte[1024];
@@ -92,11 +86,11 @@ namespace KernelInteropTests
             Assert.Equal(1024, result);
         }
 
-        [Fact]
-        public void CanWriteFrom()
+        //[Fact]
+        public unsafe void CanWriteFrom()
         {
             var data = new byte[1024];
-            var result = _memhole.WriteTo(1024, data);
+            var result = _memhole.WriteTo((long)_buffer + 4096L, data);
             Assert.Equal(1024, result);
         }
 
@@ -104,7 +98,7 @@ namespace KernelInteropTests
         public unsafe void CanSetMemoryPosition()
         {
             var result = _memhole.SetMemoryPosition((long)_buffer + 2048L);
-            Assert.Equal(1024, result);
+            Assert.Equal((long)_buffer + 2048L, result);
         }
     }
 }

@@ -51,6 +51,7 @@ namespace Wayz.Memhole.Kernel
         /// <returns>The memory read</returns>
         ReadOnlySpan<byte> ReadFrom(long position, long len);
 
+        // Coming soon
         /// <summary>
         /// Write memory to the target position
         /// </summary>
@@ -58,6 +59,7 @@ namespace Wayz.Memhole.Kernel
         /// <returns>The number of bytes written</returns>
         long Write(ReadOnlySpan<byte> data);
 
+        // Coming soon
         /// <summary>
         /// Write memory to the target position
         /// </summary>
